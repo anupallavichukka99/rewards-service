@@ -90,7 +90,7 @@ public class RewardsService {
 
             LocalDate sd=LocalDate.now().minusMonths(3).withDayOfMonth(1);
             
-            LocalDate ed=LocalDate.now().withDayOfMonth(1).minusMonths(1);
+            LocalDate ed=LocalDate.now().withDayOfMonth(1).minusDays(1);
             
             List<Transactions> customerTxns= totalCustomerTxns.stream()
 			.filter(h-> !h.getTransactionDate().isBefore(sd) && !h.getTransactionDate().isAfter(ed)).toList();
