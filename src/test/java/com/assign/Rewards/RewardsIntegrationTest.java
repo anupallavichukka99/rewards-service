@@ -1,8 +1,7 @@
 package com.assign.Rewards;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import java.util.List;
@@ -12,9 +11,30 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import com.assign.Rewards.Model.Transactions;
+import com.assign.Rewards.Response.MonthlyRewardResponse;
+import com.assign.Rewards.Response.RewardsResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+/**
+ * Integration test class for the Rewards Service.
+ *
+ * This class verifies the end-to-end behavior of REST endpoints
+ * exposed by the Rewards application using Spring Boot's test framework and MockMvc.
+ *
+ * The test cases cover:
+ *     Retrieving month-wise reward details
+ *     Handling scenarios with no transactions
+ *     Retrieving reward details for a specific customer
+ *     Customer not found exception handling
+ *     Request parameter validation
+ *     Constraint violation handling
+ *     Retrieving rewards for all customers
+ *     Application context loading verification
+ *
+ * MockMvc is used to perform HTTP requests and validate
+ */
+
 
 @AutoConfigureMockMvc
 @SpringBootTest
@@ -28,45 +48,39 @@ class RewardsIntegrationTest {
     
     
     @Test
-    void testGetCustomerTransactionssMonthWise() throws Exception {
+    void testGetCustomerTransactionsMonthWise() throws Exception {
 
         MvcResult mvcResult =
-                mockMvc.perform(get("/api/monthWise").param("date", "2026-05"))
+                mockMvc.perform(get("/api/monthWiseRewards").param("date", "2026-05"))
                         .andExpect(status().isOk())
                         .andReturn();
 
-        String response =
-                mvcResult.getResponse().getContentAsString();
+        String response =mvcResult.getResponse().getContentAsString();
 
-        List<Transactions> rewards =
+        List<MonthlyRewardResponse> rewards =
                 objectMapper.readValue(
                         response,
-                        new TypeReference<List<Transactions>>() {
-                        });
+                        new TypeReference<List<MonthlyRewardResponse>>() {});
 
-        assertEquals(102,
-                rewards.get(0).getCustomerId());
+        assertEquals(101,rewards.get(0).getCustomerId());
 
-        assertEquals("Dhanvika",
-                rewards.get(0).getCustomerName());
+        assertEquals("Anu",rewards.get(0).getCustomerName());
+        
+        assertEquals(3,rewards.size());
     }
     
     @Test
     void testZeroTransactionsMonthWise() throws Exception {
 
         MvcResult mvcResult =
-                mockMvc.perform(get("/api/monthWise").param("date", "2027-05"))
+                mockMvc.perform(get("/api/monthWiseRewards").param("date", "2027-05"))
                         .andExpect(status().isOk())
                         .andReturn();
 
-        String response =
-                mvcResult.getResponse().getContentAsString();
+        String response =mvcResult.getResponse().getContentAsString();
 
-        List<Transactions> rewards =
-                objectMapper.readValue(
-                        response,
-                        new TypeReference<List<Transactions>>() {
-                        });
+        List<MonthlyRewardResponse> rewards = objectMapper.readValue(response,
+                        new TypeReference<List<MonthlyRewardResponse>>() {});
 
         assertEquals(0,rewards.size());
     }
@@ -74,44 +88,61 @@ class RewardsIntegrationTest {
     @Test
     void testGetTransactionsByCustomerId() throws Exception {
 
-        MvcResult mvcResult =
-                mockMvc.perform(get("/api/customerId/102"))
-                        .andExpect(status().isOk())
-                        .andReturn();
+        MvcResult mvcResult = mockMvc.perform(get("/api/customerId/102"))
+                        	.andExpect(status().isOk())
+                        	.andReturn();
 
-        String response =
-                mvcResult.getResponse().getContentAsString();
+        String response =mvcResult.getResponse().getContentAsString();
 
-        List<Transactions> tnx =
-                objectMapper.readValue(
-                        response,
-                        new TypeReference<List<Transactions>>() {
-                        });
+        RewardsResponse tnx =objectMapper.readValue(response, RewardsResponse.class);
 
-        assertEquals(3, tnx.size());
-
+        assertEquals(2, tnx.getMonthlyRewards().size());
        
     }
     
     
     @Test
-    void testNocustomerIdException() throws Exception {
+    void testNocustomerException() throws Exception {
 
-    	  mockMvc.perform(get("/api/customerId/104"))
+    	  mockMvc.perform(get("/api/customerId/105"))
           .andExpect(status().isNotFound())
-          .andExpect(jsonPath("$.message").value("Customer not found : 104"));       
+          .andExpect(jsonPath("$.message").value("Customer not found : 105"));       
     }
     
     @Test
-    void shouldReturnCustomerRewards()
+    void testConstraintViolationException() throws Exception {
+
+    	  mockMvc.perform(get("/api/customerId/-11"))
+          .andExpect(status().isBadRequest())
+          .andExpect(jsonPath("$.message").value("getRewardsBycustomerId.id: must be greater than 0"));       
+    }
+    
+    @Test
+    void testTransactionsNotFoundForCustomer() throws Exception {
+
+    	  mockMvc.perform(get("/api/customerId/104"))
+          .andExpect(status().isNotFound())
+          .andExpect(jsonPath("$.message").value("Transactions are not found for this customer : 104"));       
+    }
+    
+    @Test
+    void testMethodArgumentNotValidException() throws Exception {
+
+    	  mockMvc.perform(get("/api/monthWiseRewards").param("date", "23-05"))
+          .andExpect(status().isBadRequest())
+          .andExpect(jsonPath("$.message")
+        		  .value("getCustomerRewardDetailsMonthWise.date: Date must be in yyyy-MM format"));       
+    }
+    
+    
+    @Test
+    void testGetAllCustomersRewards()
             throws Exception {
 
         mockMvc.perform(get("/api/rewards"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[1].customerId")
-                        .value(102))
-                .andExpect(jsonPath("$[2].customerName")
-                        .value("Siva"));
+                .andExpect(jsonPath("$[1].customerId").value(102))
+                .andExpect(jsonPath("$[2].customerName").value("Siva"));
     }
     
     @Test
