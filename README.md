@@ -4,10 +4,10 @@ A Spring Boot application that calculates customer reward points based on transa
 
 ## Features
 
-- Retrieve customer rewards by customer ID
-- Calculate reward points based on transaction amount
+- Retrieve customer rewards by customer ID. Rewards are calculated based on customer transactions from the previous three complete months.
+- Calculate reward points based on transaction amount.
 - Generate month-wise rewards
-- Generate total reward points for each customer
+- Generate total reward points for each customer based on customer transactions from the previous three complete months.
 - Global exception handling
 - Unit tests for Service, and Repository layers
 - Integration testing for API and service layer validation
@@ -38,6 +38,19 @@ GET /api/rewards
 **Description**
 Returns reward details for all customers based on transactions from the last three months.
 
+**Reward Calculation Period**
+Rewards are calculated based on customer transactions from the previous three complete months.
+
+The current running month is excluded from reward calculations.
+Only transactions that fall within the last three completed calendar months are considered.
+Example:
+If the application is executed in June 2026, transactions from March 2026, April 2026, and May 2026 are considered.
+Transactions from June 2026 are excluded.
+
+**Customer Eligibility**
+Only customers with at least one transaction are included in the rewards summary returned by the GET /api/rewards endpoint.
+Customers without any transactions are excluded from the response.
+
 **2. Get Month-wise Rewards for All Customers**
 GET /api/monthWiseRewards?date={yyyy-MM}
 Example Request - GET http://localhost:8080/api/monthWiseRewards?date=2026-05
@@ -54,6 +67,56 @@ Example: 2026-01, 2026-12
 
   **Description**
   Returns reward details for a specific customer.
+  Rewards are calculated based on customer transactions from the previous three complete months.
+
+
+
+## Testing
+
+The application includes Unit Tests, Integration Tests, and Repository Tests to validate business logic, API behavior, and database interactions.
+
+### Unit Tests (JUnit 5 + Mockito)
+
+Unit tests are implemented for the service layer using Mockito to mock repository dependencies.
+Covered scenarios:
+* Retrieve rewards for a specific customer
+* Retrieve rewards for all customers
+* Generate month-wise reward summaries
+* Filter transactions within the previous three completed months
+* Generate customer reward response
+* Reward points calculation logic
+* Customer not found exception handling
+
+### Integration Tests (Spring Boot Test + MockMvc)
+
+Integration tests verify the end-to-end behavior of REST APIs.
+Covered scenarios:
+* Retrieve rewards for all customers
+* Retrieve rewards by customer ID
+* Retrieve month-wise rewards
+* Customer not found exception
+* Transactions not found exception
+* Request parameter validation
+* Constraint violation validation
+* Empty result scenarios
+* Application context loading
+
+### Repository Tests (@DataJpaTest)
+
+Repository tests validate JPA queries against the H2 in-memory database.
+Covered scenarios:
+* Retrieve all transactions
+* Find customer by ID
+* Customer not found scenario
+* Find transactions by month and year
+
+### Test Frameworks
+* JUnit 5
+* Mockito
+* Spring Boot Test
+* MockMvc
+* H2 In-Memory Database
+
 
 ## Project Structure
 ├── src/main/java
