@@ -9,8 +9,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class CustomerTransactions {
 
 	@Id
@@ -23,48 +29,4 @@ public class CustomerTransactions {
     @JoinColumn(name="customer_id")
     private Customer customer;
 
-	public Long getTransactionId() {
-		return transactionId;
-	}
-
-	public CustomerTransactions() {}
-	
-	public CustomerTransactions(Long transactionId, BigDecimal amount, LocalDate transactionDate, Customer customer) {
-		super();
-		this.transactionId = transactionId;
-		this.amount = amount;
-		this.transactionDate = transactionDate;
-		this.customer = customer;
-	}
-
-	public void setTransactionId(Long transactionId) {
-		this.transactionId = transactionId;
-	}
-
-	public BigDecimal getAmount() {
-		return amount;
-	}
-
-	public void setAmount(BigDecimal amount) {
-		this.amount = amount;
-	}
-
-	public LocalDate getTransactionDate() {
-		return transactionDate;
-	}
-
-	public void setTransactionDate(LocalDate transactionDate) {
-		this.transactionDate = transactionDate;
-	}
-
-	public Customer getCustomer() {
-		return customer;
-	}
-
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
-	}
-
-
-	
 }

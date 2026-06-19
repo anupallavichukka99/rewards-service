@@ -1,10 +1,8 @@
-package com.assign.Rewards.Response;
+package com.assign.Rewards.dto;
 
 import java.math.BigDecimal;
 import java.time.YearMonth;
 import java.util.List;
-
-import com.assign.Rewards.Model.MonthlyRewards;
 
 public class MonthlyRewardResponse {
 

@@ -10,15 +10,16 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.support.CustomSQLErrorCodesTranslation;
 import org.springframework.stereotype.Service;
+
 import com.assign.Rewards.Entity.Customer;
 import com.assign.Rewards.Entity.CustomerTransactions;
 import com.assign.Rewards.GlobalExceptionHandler.CustomerNotFound;
 import com.assign.Rewards.GlobalExceptionHandler.TransactionsNotFound;
-import com.assign.Rewards.Model.MonthlyRewards;
 import com.assign.Rewards.Repository.CustomerRepository;
 import com.assign.Rewards.Repository.CustomerTransactionRepository;
-import com.assign.Rewards.Response.MonthlyRewardResponse;
-import com.assign.Rewards.Response.RewardsResponse;
+import com.assign.Rewards.dto.MonthlyRewardResponse;
+import com.assign.Rewards.dto.MonthlyRewards;
+import com.assign.Rewards.dto.RewardsResponse;
 
 
 /**

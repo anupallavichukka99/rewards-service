@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.assign.Rewards.Response.MonthlyRewardResponse;
-import com.assign.Rewards.Response.RewardsResponse;
+import com.assign.Rewards.dto.MonthlyRewardResponse;
+import com.assign.Rewards.dto.RewardsResponse;
 
 public interface RewardService {
 

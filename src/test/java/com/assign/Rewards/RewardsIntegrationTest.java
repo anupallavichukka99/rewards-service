@@ -11,8 +11,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import com.assign.Rewards.Response.MonthlyRewardResponse;
-import com.assign.Rewards.Response.RewardsResponse;
+
+import com.assign.Rewards.dto.MonthlyRewardResponse;
+import com.assign.Rewards.dto.RewardsResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

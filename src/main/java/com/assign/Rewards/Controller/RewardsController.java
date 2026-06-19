@@ -8,9 +8,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.assign.Rewards.Response.MonthlyRewardResponse;
-import com.assign.Rewards.Response.RewardsResponse;
+
 import com.assign.Rewards.Service.RewardsServiceImpl;
+import com.assign.Rewards.dto.MonthlyRewardResponse;
+import com.assign.Rewards.dto.RewardsResponse;
 
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;

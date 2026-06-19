@@ -20,9 +20,9 @@ import com.assign.Rewards.Entity.CustomerTransactions;
 import com.assign.Rewards.GlobalExceptionHandler.CustomerNotFound;
 import com.assign.Rewards.Repository.CustomerRepository;
 import com.assign.Rewards.Repository.CustomerTransactionRepository;
-import com.assign.Rewards.Response.MonthlyRewardResponse;
-import com.assign.Rewards.Response.RewardsResponse;
 import com.assign.Rewards.Service.RewardsServiceImpl;
+import com.assign.Rewards.dto.MonthlyRewardResponse;
+import com.assign.Rewards.dto.RewardsResponse;
 
 /**
 * Unit test class for RewardsServiceImpl.
