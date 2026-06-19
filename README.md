@@ -136,17 +136,15 @@ Covered scenarios:
 │       │   ├── TransactionsNotFound.java
 │       │   └── GlobalExceptionHandler.java
 │       │
-│       ├── Model
+│       ├── dto
 │       │   ├── ErrorResponse.java
 │       │   └── MonthlyRewards.java
+│       │   ├── MonthlyRewardResponse.java
+│       │   └── RewardsResponse.java
 │       │
 │       ├── Repository
 │       │   ├── CustomerRepository.java
-│       │   └── CustomerTransactionRepository.java
-│       │
-│       ├── Response
-│       │   ├── MonthlyRewardResponse.java
-│       │   └── RewardsResponse.java
+│       │   └── CustomerTransactionRepository.java 
 │       │
 │       └── Service
 │           ├── RewardService.java
@@ -163,6 +161,7 @@ Covered scenarios:
         ├── RewardsApplicationUnitTestCases.java
         ├── RewardsIntegrationTest.java
         └── RewardsRepositoryTest.java
+
 
 
 ## Author
